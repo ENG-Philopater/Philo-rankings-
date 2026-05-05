@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم مشاريع دهب</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; }
+        .project-card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .voting-options { margin-top: 15px; }
+        .voting-options label { display: block; margin-bottom: 10px; font-size: 16px; cursor: pointer; }
+        
+        /* تنسيق قائمة التوب (لوحة الشرف) */
+        .top-list { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-top: 30px; }
+        .top-item { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* زرار Show Info */
+        .show-info-btn { background-color: #2e7d32; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .show-info-btn:hover { background-color: #1b5e20; }
+
+        /* تنسيق النافذة المنبثقة (Popup) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
+        .modal-content { background-color: #fff; margin: 5% auto; padding: 20px; border-radius: 15px; width: 75%; max-width: 800px; position: relative; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; position: absolute; right: 20px; top: 10px; }
+        .close-btn:hover { color: #000; }
+        .modal-gallery { display: flex; justify-content: space-around; margin-top: 20px; }
+        .img-box { width: 45%; }
+        .img-box img { width: 100%; border-radius: 10px; border: 2px solid #ddd; }
+        .modal-stats { margin-top: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 10px; }
+        .top-category { font-size: 1.2em; color: #2e7d32; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="project-card">
+        <h2>مشروع دهب (الواجهة والخلفية)</h2>
+        <div style="display: flex; gap: 10px;">
+            <img src="front-image.jpg" alt="صورة الواجهة" style="width: 48%; border-radius: 8px;">
+            <img src="back-image.jpg" alt="صورة الخلفية" style="width: 48%; border-radius: 8px;">
+        </div>
+        
+        <h3>قيم هذا المشروع:</h3>
+        <div class="voting-options">
+            <label><input type="radio" name="vote" value="identity"> التعبير عن هوية دهب</label>
+            <label><input type="radio" name="vote" value="gaudi"> استلهام من الطبيعه و فلسفة جاودي</label>
+            <label><input type="radio" name="vote" value="function"> الوظيفه و الحركه المروريه</label>
+            <label><input type="radio" name="vote" value="environment"> التوافق مع البيئه و المناخ</label>
+            <label><input type="radio" name="vote" value="innovation"> الابتكار و التميز</label>
+        </div>
+        <button style="padding: 10px 20px; background: #0056b3; color: white; border: none; border-radius: 5px; cursor: pointer;">إرسال التقييم</button>
+    </div>
+
+    <div class="top-list">
+        <h2>أعلى المشاريع تقييماً</h2>
+        
+        <div class="top-item">
+            <span>1. مشروع رقم (أ)</span>
+            <button class="show-info-btn" onclick="openModal('مشروع رقم (أ)', 'front-image.jpg', 'back-image.jpg', 'استلهام من الطبيعه و فلسفة جاودي')">Show Info</button>
+        </div>
+        
+        <div class="top-item">
+            <span>2. مشروع رقم (ب)</span>
+            <button class="show-info-btn" onclick="openModal('مشروع رقم (ب)', 'front-image.jpg', 'back-image.jpg', 'التعبير عن هوية دهب')">Show Info</button>
+        </div>
+
+        <div class="top-item">
+            <span>3. مشروع رقم (ج)</span>
+            <button class="show-info-btn" onclick="openModal('مشروع رقم (ج)', 'front-image.jpg', 'back-image.jpg', 'الابتكار و التميز')">Show Info</button>
+        </div>
+    </div>
+
+    <div id="infoModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle">اسم المشاركة</h2>
+        
+        <div class="modal-gallery">
+          <div class="img-box">
+            <h3>الواجهة</h3>
+            <img id="modalFrontImg" src="" alt="واجهة">
+          </div>
+          <div class="img-box">
+            <h3>الخلفية</h3>
+            <img id="modalBackImg" src="" alt="خلفية">
+          </div>
+        </div>
+
+        <div class="modal-stats">
+          <h3>أعلى تقييم حصل عليه في:</h3>
+          <p id="modalTopVote" class="top-category">التعبير عن هوية دهب</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        function openModal(name, frontSrc, backSrc, topCategory) {
+            document.getElementById('modalTitle').innerText = name;
+            document.getElementById('modalFrontImg').src = frontSrc;
+            document.getElementById('modalBackImg').src = backSrc;
+            document.getElementById('modalTopVote').innerText = topCategory;
+            document.getElementById('infoModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            let modal = document.getElementById('infoModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
